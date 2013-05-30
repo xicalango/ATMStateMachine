@@ -2,12 +2,12 @@ package xx.sm.transition;
 
 import xx.sm.NameDescriptor;
 
-public enum SpecialTransitions implements NameDescriptor{
+public enum SpecialSignals implements NameDescriptor{
 	COMPLETION;
 
 	private String name;
 	
-	private SpecialTransitions() {
+	private SpecialSignals() {
 		this.name = "__" + toString();
 	}
 

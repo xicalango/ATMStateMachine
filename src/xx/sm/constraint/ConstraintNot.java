@@ -16,4 +16,9 @@ public class ConstraintNot implements Constraint {
 		return !c.guard(env);
 	}
 
+	@Override
+	public String toString() {
+		return "(not " + c + ")";
+	}
+	
 }

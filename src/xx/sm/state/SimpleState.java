@@ -29,7 +29,7 @@ public class SimpleState implements State {
 
 	@Override
 	public void exitAction(Environment env) {
-		System.out.println("extiAction");
+		System.out.println("exitAction");
 	}
 
 	@Override

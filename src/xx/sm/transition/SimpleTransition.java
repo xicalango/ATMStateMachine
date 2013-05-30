@@ -56,4 +56,9 @@ public class SimpleTransition implements Transition  {
 		return false;
 	}
 
+	@Override
+	public String toString() {
+		return "[" + startState + " -> " + endState + " (with " + triggerSignal + ")]";
+	}
+	
 }

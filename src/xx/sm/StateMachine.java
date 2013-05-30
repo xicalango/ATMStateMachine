@@ -67,7 +67,7 @@ public class StateMachine {
 			}
 		}
 		
-		return null;
+		throw new RuntimeException("State not existing: " + stateName);
 		
 	}
 	

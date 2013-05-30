@@ -7,11 +7,11 @@ public class CompletionTransition extends SimpleTransition {
 
 	public CompletionTransition(NameDescriptor startState,
 			NameDescriptor endState) {
-		super(startState, endState, SpecialTransitions.COMPLETION);
+		super(startState, endState, SpecialSignals.COMPLETION);
 	}
 
 	public CompletionTransition(String startState, String endState) {
-		super(startState, endState, SpecialTransitions.COMPLETION.getName());
+		super(startState, endState, SpecialSignals.COMPLETION.getName());
 	}
 	
 	@Override

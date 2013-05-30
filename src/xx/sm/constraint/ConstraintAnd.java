@@ -17,4 +17,9 @@ public class ConstraintAnd implements Constraint {
 		return c1.guard(env) && c2.guard(env);
 	}
 
+	@Override
+	public String toString() {
+		return "(" + c1 + " and " + c2 + ")";
+	}
+	
 }
