@@ -1,7 +1,7 @@
 package xx.sm.transition;
 
 import xx.sm.Environment;
-import xx.sm.NameDescriptor;
+import xx.sm.Identifier;
 
 public class SimpleTransition implements Transition  {
 
@@ -17,8 +17,8 @@ public class SimpleTransition implements Transition  {
 		this.triggerSignal = triggerSignal;
 	}
 	
-	public SimpleTransition(NameDescriptor startState, NameDescriptor endState,
-			NameDescriptor triggerSignal) {
+	public SimpleTransition(Identifier startState, Identifier endState,
+			Identifier triggerSignal) {
 		super();
 		this.startState = startState.getName();
 		this.endState = endState.getName();

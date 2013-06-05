@@ -75,7 +75,7 @@ public class StateMachineRunner implements ActiveStateConfiguration, Environment
 		signalPool.add(signal);
 	}
 
-	public void offerSignal(NameDescriptor signal) {
+	public void offerSignal(Identifier signal) {
 		offerSignal(signal.getName());
 	}
 	
@@ -114,22 +114,41 @@ public class StateMachineRunner implements ActiveStateConfiguration, Environment
 
 	private void handleTransition(Transition t) {
 		
-		State start = machine.getStateRecursive(t.getStartState());
+		List<State> starts = machine.getExitedStatesInToOut(t.getStartState(), this);
 		List<State> ends = machine.getEnteredStatesOutToIn(t.getEndState());
 		
-		start.exitAction(this);
+		for(State start: starts) {
+			LOG.info("Exiting " + start.getName());
+			start.exitAction(this);
+			activeStates.remove(start);
+		}
+
 		offerSignal(SpecialSignals.COMPLETION);
-		
-		activeStates.remove(start);
 		
 		t.executeEffect();
 		
 		for(State end : ends) {
+			LOG.info("Entering " + end.getName());
 			end.entryAction(this);
-			end.doAction(this);
+			runStateAction(end);
 			activeStates.add(end);
 		}
 		
+	}
+
+	private Thread runStateAction(final State state) {
+		final Environment env = this;
+		
+		Thread t = new Thread(new Runnable() {				
+			@Override
+			public void run() {
+				state.doAction(env);
+			}
+		});
+		
+		t.start();
+		
+		return t;
 	}
 
 	private static List<Transition> choose(List<List<Transition>> availableSteps) {

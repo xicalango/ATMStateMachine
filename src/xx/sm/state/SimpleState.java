@@ -1,7 +1,7 @@
 package xx.sm.state;
 
 import xx.sm.Environment;
-import xx.sm.NameDescriptor;
+import xx.sm.Identifier;
 
 public class SimpleState implements State {
 
@@ -17,7 +17,7 @@ public class SimpleState implements State {
 		this.name = name;
 	}
 	
-	public SimpleState(NameDescriptor name) {
+	public SimpleState(Identifier name) {
 		super();
 		this.name = name.getName();
 	}

@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import xx.sm.Environment;
-import xx.sm.NameDescriptor;
+import xx.sm.Identifier;
 import xx.sm.StateMachineFactory;
 
 public class SimpleRegionState extends SimpleState implements RegionState {
@@ -17,7 +17,7 @@ public class SimpleRegionState extends SimpleState implements RegionState {
 		this.stateMachineFactories = Arrays.asList(stateMachineFactories);
 	}
 
-	public SimpleRegionState(NameDescriptor name, StateMachineFactory... stateMachineFactories) {
+	public SimpleRegionState(Identifier name, StateMachineFactory... stateMachineFactories) {
 		this(name.getName(), stateMachineFactories);
 	}
 	

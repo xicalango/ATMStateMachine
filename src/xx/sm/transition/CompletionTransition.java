@@ -1,12 +1,12 @@
 package xx.sm.transition;
 
-import xx.sm.NameDescriptor;
+import xx.sm.Identifier;
 
 public class CompletionTransition extends SimpleTransition {
 
 
-	public CompletionTransition(NameDescriptor startState,
-			NameDescriptor endState) {
+	public CompletionTransition(Identifier startState,
+			Identifier endState) {
 		super(startState, endState, SpecialSignals.COMPLETION);
 	}
 

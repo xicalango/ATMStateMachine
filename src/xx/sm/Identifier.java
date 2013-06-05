@@ -1,5 +1,5 @@
 package xx.sm;
 
-public interface NameDescriptor {
+public interface Identifier {
 	String getName();
 }

@@ -1,6 +1,7 @@
 package xx.sm;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -98,11 +99,11 @@ public class StateMachine {
 		
 	}
 	
-	public State getStateRecursive(NameDescriptor stateName) {
+	public State getStateRecursive(Identifier stateName) {
 		return getStateRecursive(stateName.getName());
 	}
 
-	public State getState(NameDescriptor stateName) {
+	public State getState(Identifier stateName) {
 		return states.get(stateName.getName());
 	}
 
@@ -110,7 +111,7 @@ public class StateMachine {
 		return states.get(stateName);
 	}
 	
-	public List<State> getEnteredStatesOutToIn(NameDescriptor stateName) {
+	public List<State> getEnteredStatesOutToIn(Identifier stateName) {
 		return getEnteredStatesOutToIn(stateName.getName());
 	}
 	
@@ -118,9 +119,9 @@ public class StateMachine {
 		
 		List<State> outToInList = new ArrayList<>();
 		
-		if(states.containsKey(stateName)) {
-			
-			State s = states.get(stateName);
+		State s = getState(stateName);
+		
+		if(s != null) {
 			
 			outToInList.add(s);
 			
@@ -166,6 +167,47 @@ public class StateMachine {
 		
 		return outToInList;
 		
+	}
+	
+	public List<State> getExitedStatesInToOut(Identifier stateName, ActiveStateConfiguration conf) {
+		return getExitedStatesInToOut(stateName.getName(), conf);
+	}
+	
+	public List<State> getExitedStatesInToOut(String stateName, ActiveStateConfiguration conf) {
+		List<State> inToOutList = new ArrayList<>();
+		
+		State s = getStateRecursive(stateName);
+		
+		if(s.isRegionState()) {
+			
+			List<StateMachine> sms = subStateMachines.get(stateName);
+			
+			for(StateMachine sm : sms) {
+				for(State active : conf.getActiveStates()) {
+					State smState = sm.getState(active);
+					
+					if(smState != null) {
+						inToOutList.add(smState);
+					}
+				}
+			}
+			
+			
+		}
+		
+		/*
+		List<State> outToInList = getEnteredStatesOutToIn(stateName);
+		
+		Collections.reverse(outToInList);
+		
+		inToOutList.addAll(outToInList);
+		*/
+		
+		//TODO multileveled statemachines!
+		
+		inToOutList.add(s);
+		
+		return inToOutList;
 	}
 	
 	public List<StateMachine> getSubStateMachines(String stateName) {

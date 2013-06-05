@@ -1,8 +1,8 @@
 package xx.sm.transition;
 
-import xx.sm.NameDescriptor;
+import xx.sm.Identifier;
 
-public enum SpecialSignals implements NameDescriptor{
+public enum SpecialSignals implements Identifier{
 	COMPLETION;
 
 	private String name;

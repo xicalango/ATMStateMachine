@@ -1,9 +1,9 @@
 package xx.sm.state;
 
 import xx.sm.Environment;
-import xx.sm.NameDescriptor;
+import xx.sm.Identifier;
 
-public interface State extends NameDescriptor{
+public interface State extends Identifier{
 
 	String getName();
 	

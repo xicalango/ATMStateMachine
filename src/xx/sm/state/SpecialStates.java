@@ -1,8 +1,8 @@
 package xx.sm.state;
 
-import xx.sm.NameDescriptor;
+import xx.sm.Identifier;
 
-public enum SpecialStates implements NameDescriptor{
+public enum SpecialStates implements Identifier{
 	FINAL;
 
 	private String name;
