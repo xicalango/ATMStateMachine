@@ -1,9 +1,9 @@
 package xx.sm;
 
-import java.util.List;
+import java.util.Set;
 
 import xx.sm.state.State;
 
 public interface ActiveStateConfiguration {
-	List<State> getActiveStates();
+	Set<State> getActiveStates();
 }

@@ -1,8 +1,9 @@
 package xx.sm.state;
 
 import xx.sm.Environment;
+import xx.sm.NameDescriptor;
 
-public interface State {
+public interface State extends NameDescriptor{
 
 	String getName();
 	
@@ -11,5 +12,6 @@ public interface State {
 	void doAction(Environment env);
 	
 	boolean isRegionState();
+	boolean isFinalState();
 	
 }

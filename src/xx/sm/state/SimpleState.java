@@ -48,4 +48,9 @@ public class SimpleState implements State {
 	public String toString() {
 		return getName();
 	}
+
+	@Override
+	public boolean isFinalState() {
+		return false;
+	}
 }

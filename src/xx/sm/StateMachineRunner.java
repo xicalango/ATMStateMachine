@@ -3,10 +3,11 @@ package xx.sm;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
-import java.util.Random;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,7 +26,7 @@ public class StateMachineRunner implements ActiveStateConfiguration, Environment
 		@Override
 		public int compare(String o1, String o2) {
 			
-			LOG.info("comapre: " + o1 + ", " + o2);
+			LOG.fine("comapre: " + o1 + ", " + o2);
 			
 			if(o1.equals(SpecialSignals.COMPLETION.getName())) {
 				return -1;
@@ -39,7 +40,7 @@ public class StateMachineRunner implements ActiveStateConfiguration, Environment
 	}
 	
 	private StateMachine machine;
-	private List<State> activeStates = new ArrayList<>();
+	private Set<State> activeStates = new HashSet<>();
 	private PriorityQueue<String> signalPool = new PriorityQueue<>(11, new SignalComparator() );
 	
 	private Map<String, Object> environment = new HashMap<>();
@@ -79,16 +80,14 @@ public class StateMachineRunner implements ActiveStateConfiguration, Environment
 	}
 	
 	public void step() {
-		LOG.info("State before step");
-		logState();
-		
-		
+		LOG.info("State before step" + logState());
 		
 		String event = signalPool.poll();
 		
 		LOG.info("Polled signal: " + event);
 		
 		if(event == null) {
+			LOG.warning("No signal could be retrieved!");
 			return;
 		}
 		
@@ -106,19 +105,17 @@ public class StateMachineRunner implements ActiveStateConfiguration, Environment
 			handleTransition(t);
 		}
 		
-		LOG.info("State after step");
-		logState();
+		LOG.info("State after step" + logState());
 	}
 	
-	private void logState() {
-		LOG.info(activeStates.toString());
-		LOG.info(signalPool.toString());
+	private String logState() {
+		return "\n" + "ActiveStates: " + activeStates.toString() + "\n" + "SignalPool:" + signalPool.toString();
 	}
 
 	private void handleTransition(Transition t) {
 		
-		State start = machine.getState(t.getStartState());
-		State end = machine.getState(t.getEndState());
+		State start = machine.getStateRecursive(t.getStartState());
+		List<State> ends = machine.getEnteredStatesOutToIn(t.getEndState());
 		
 		start.exitAction(this);
 		offerSignal(SpecialSignals.COMPLETION);
@@ -127,9 +124,12 @@ public class StateMachineRunner implements ActiveStateConfiguration, Environment
 		
 		t.executeEffect();
 		
-		end.entryAction(this);
+		for(State end : ends) {
+			end.entryAction(this);
+			end.doAction(this);
+			activeStates.add(end);
+		}
 		
-		activeStates.add(end);
 	}
 
 	private static List<Transition> choose(List<List<Transition>> availableSteps) {
@@ -229,7 +229,7 @@ public class StateMachineRunner implements ActiveStateConfiguration, Environment
 	}
 
 	@Override
-	public List<State> getActiveStates() {
+	public Set<State> getActiveStates() {
 		return activeStates;
 	}
 
